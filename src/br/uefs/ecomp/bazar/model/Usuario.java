@@ -59,14 +59,14 @@ public class Usuario {
         return leilaoManual;   
     }
     
-    public LeilaoAutomatico cadastroLeilaoAutomatico(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino){
-        LeilaoAutomatico leilaoAutomatico = new LeilaoAutomatico(produto, precoMinimo, incrementoMinimo, this,inicio, termino);
+    public LeilaoAutomatico cadastrarLeilaoAutomatico(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino){
+        LeilaoAutomatico leilaoAutomatico = new LeilaoAutomatico(produto, precoMinimo, incrementoMinimo, this, inicio, termino);
         this.leilao = leilaoAutomatico;
         return leilaoAutomatico;
     }
     
-    public LeilaoAutomaticoFechado cadastroLeilaoAutomaticoFechado(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino){
-        LeilaoAutomaticoFechado leilaoFechado = new LeilaoAutomaticoFechado(produto, precoMinimo, incrementoMinimo, this,inicio, termino);
+    public LeilaoAutomaticoFechado cadastrarLeilaoAutomaticoFechado(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino){
+        LeilaoAutomaticoFechado leilaoFechado = new LeilaoAutomaticoFechado(produto, precoMinimo, incrementoMinimo, this, inicio, termino);
         this.leilao = leilaoFechado;
         return leilaoFechado;
     }

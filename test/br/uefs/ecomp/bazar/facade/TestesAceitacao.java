@@ -51,7 +51,7 @@ public class TestesAceitacao {
 	
 	@Test(expected = UsuarioNaoCadastrouException.class)
 	public void testCadastrarSenhaInvalida() throws UsuarioNaoCadastrouException {
-		f.cadastrarUsuario("maria", "Maria dos Santos", "", "123456789-01", "Rua Drummond, 23, Centro", "7532213456");
+            f.cadastrarUsuario("maria", "Maria dos Santos", "", "123456789-01", "Rua Drummond, 23, Centro", "7532213456");
 	}
 	
 	@Test
@@ -133,6 +133,7 @@ public class TestesAceitacao {
 		Produto produto = f.cadastrarProduto("telefone", "iPhone 4S", "Apple iPhone 4S");
 		
 		try {
+                    
 			f.cadastrarLeilaoManual(produto, 200.00, 0.00);
 			fail("Incremento minimo deve ser maior que zero");
 		} catch (LeilaoNaoCadastrouException e) { }
@@ -459,7 +460,7 @@ public class TestesAceitacao {
 		assertEquals(termino.getTime(), leilao.getTermino());
 		assertSame(produto, leilao.getProduto());
 		assertSame(vendedor, leilao.getVendedor());
-		assertEquals(Leilao.INICIADO, leilao.getStatus());
+		assertEquals(Leilao.INICIADO, leilao.getStatus()); // Não posso modificar os testes, mas aqui vai dar erro por causa da data de inicio do Leilao. A data "setada" ainda não chegou.
 		assertNull(leilao.getUltimoLance());
 		assertNull(leilao.getVenda());
 	}

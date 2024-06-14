@@ -17,6 +17,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
 
+import br.uefs.ecomp.bazar.model.exception.UsuarioNaoCadastrouException;
+import br.uefs.ecomp.bazar.model.exception.LoginFalhouException;
+import br.uefs.ecomp.bazar.model.exception.ProdutoNaoCadastrouException;
+import br.uefs.ecomp.bazar.model.exception.LeilaoNaoCadastrouException;
+import br.uefs.ecomp.bazar.model.exception.LeilaoNaoEncerradoException;
+import br.uefs.ecomp.bazar.model.exception.LanceInvalidoException;
+
 public class ControllerBazar {
     private Usuario usuarioLogado;
     private ArrayList<Usuario> usuarios = new ArrayList<>();
@@ -28,13 +35,16 @@ public class ControllerBazar {
         
     }
       
-    public Usuario cadastrarUsuario(String login, String nome, String senha, String cpf, String endereco, String telefone) {
+    public Usuario cadastrarUsuario(String login, String nome, String senha, String cpf, String endereco, String telefone) throws UsuarioNaoCadastrouException {
+        if(login.isEmpty() || senha.isEmpty() || nome.isEmpty() || cpf.isEmpty() || endereco.isEmpty() || telefone.isEmpty()){
+            throw new UsuarioNaoCadastrouException();
+        }
         Usuario usuario = new Usuario(login, nome, senha, cpf, endereco, telefone);
         usuarios.add(usuario);    
         return usuario;
     }
     
-    public Usuario fazerLogin(String login, String senha){
+    public Usuario fazerLogin(String login, String senha) throws UsuarioNaoCadastrouException, LoginFalhouException{
         this.deslogar();
         Iterator iterator = usuarios.iterator();
         
@@ -46,10 +56,13 @@ public class ControllerBazar {
                 return usuario;
             }
         }
-        return null;
+        throw new LoginFalhouException();
     }
     
-    public Produto cadastrarProduto(String tipo, String descricaoResumida, String descricaoDetalhada){
+    public Produto cadastrarProduto(String tipo, String descricaoResumida, String descricaoDetalhada) throws ProdutoNaoCadastrouException, UsuarioNaoCadastrouException, LoginFalhouException{
+        if(tipo.isEmpty() || descricaoDetalhada.isEmpty() || descricaoResumida.isEmpty()){
+            throw new ProdutoNaoCadastrouException();
+        }
         if(this.logado){
             produto = new Produto(tipo, descricaoResumida, descricaoDetalhada, this.usuarioLogado);
             this.usuarioLogado.cadastrarProduto(produto);
@@ -69,14 +82,27 @@ public class ControllerBazar {
         
     }
     
-    public LeilaoManual cadastrarLeilaoManual(Produto produto, double precoMinimo, double incrementoMinimo){
+    public LeilaoManual cadastrarLeilaoManual(Produto produto, double precoMinimo, double incrementoMinimo) throws UsuarioNaoCadastrouException, LoginFalhouException, ProdutoNaoCadastrouException, LeilaoNaoCadastrouException{
+        if(precoMinimo == 0.0 || incrementoMinimo == 0.0){
+            throw new LeilaoNaoCadastrouException();
+        }
         LeilaoManual leilao = this.usuarioLogado.cadastrarLeilaoManual(precoMinimo, incrementoMinimo, produto);
         this.leiloes.leilaoCadastradoDb(leilao);
         return leilao;
     }
-    public LeilaoAutomatico cadastrarLeilaoAutomatico(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino){
-        LeilaoAutomatico leilao = this.usuarioLogado.cadastroLeilaoAutomatico(produto, precoMinimo, incrementoMinimo, inicio, termino);
+    
+    public LeilaoAutomatico cadastrarLeilaoAutomatico(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino) throws UsuarioNaoCadastrouException, LoginFalhouException, 
+			ProdutoNaoCadastrouException, LeilaoNaoCadastrouException{
+        if(precoMinimo == 0.0 || incrementoMinimo == 0.0){
+            throw new LeilaoNaoCadastrouException();
+        }
+        LeilaoAutomatico leilao = this.usuarioLogado.cadastrarLeilaoAutomatico(produto, precoMinimo, incrementoMinimo, inicio, termino);
         this.leiloes.leilaoCadastradoDb(leilao);
+        return leilao;
+    }
+    
+    public LeilaoAutomaticoFechado cadastrarLeilaoAutomaticoFechado(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino){
+        LeilaoAutomaticoFechado leilao = this.usuarioLogado.cadastrarLeilaoAutomaticoFechado(produto, precoMinimo, incrementoMinimo, inicio, termino);
         return leilao;
     }
     
@@ -94,6 +120,7 @@ public class ControllerBazar {
     }
     
     public boolean darLance(double valor){
+        
         return this.usuarioLogado.darLance(valor);
     }
     
