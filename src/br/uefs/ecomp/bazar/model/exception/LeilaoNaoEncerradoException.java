@@ -1,0 +1,13 @@
+package br.uefs.ecomp.bazar.model.exception;
+
+public class LeilaoNaoEncerradoException extends Exception{
+
+    public LeilaoNaoEncerradoException() {
+        super("Leilao não encerrado!");
+    }
+
+    public LeilaoNaoEncerradoException(String message) {
+        super(message);
+    }
+    
+}
