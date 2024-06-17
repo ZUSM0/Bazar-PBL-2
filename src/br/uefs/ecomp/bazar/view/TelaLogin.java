@@ -156,7 +156,7 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         // TODO add your handling code here:
-        TelaPrincipál principal = new TelaPrincipál();
+        TelaPrincipal principal = new TelaPrincipal();
         try {
             cb.fazerLogin(txtLogin.getText(), String.valueOf(txtSenha.getPassword()));
             this.dispose();
