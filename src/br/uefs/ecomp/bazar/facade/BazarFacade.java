@@ -82,7 +82,7 @@ public class BazarFacade {
         return this.cb.listarLeiloesIniciados();
     }
 
-    public void participarLeilao(Leilao leilao) {
+    public void participarLeilao(Leilao leilao) throws LeilaoNaoCadastrouException {
         this.cb.participarLeilao(leilao);
     }
 
