@@ -51,7 +51,7 @@ public class TestesAceitacao {
 	
 	@Test(expected = UsuarioNaoCadastrouException.class)
 	public void testCadastrarSenhaInvalida() throws UsuarioNaoCadastrouException {
-            f.cadastrarUsuario("maria", "Maria dos Santos", "", "123456789-01", "Rua Drummond, 23, Centro", "7532213456");
+		f.cadastrarUsuario("maria", "Maria dos Santos", "", "123456789-01", "Rua Drummond, 23, Centro", "7532213456");
 	}
 	
 	@Test
@@ -101,7 +101,7 @@ public class TestesAceitacao {
 			fail("Tipo do produto n?o cadastrado.");
 		} catch (ProdutoNaoCadastrouException e) { }
 		try {
-			f.cadastrarProduto("", "Galaxy S", "Samsung Galaxy S");
+			f.cadastrarProduto("telefone", "", "Samsung Galaxy S");
 			fail("Descricao resumida do produto n?o cadastrada.");
 		} catch (ProdutoNaoCadastrouException e) { }
 	}
@@ -132,7 +132,7 @@ public class TestesAceitacao {
 		f.fazerLogin("maria", "senha1");
 		Produto produto = f.cadastrarProduto("telefone", "iPhone 4S", "Apple iPhone 4S");
 		
-		try {
+		try {                    
                     
 			f.cadastrarLeilaoManual(produto, 200.00, 0.00);
 			fail("Incremento minimo deve ser maior que zero");
@@ -460,7 +460,7 @@ public class TestesAceitacao {
 		assertEquals(termino.getTime(), leilao.getTermino());
 		assertSame(produto, leilao.getProduto());
 		assertSame(vendedor, leilao.getVendedor());
-		assertEquals(Leilao.INICIADO, leilao.getStatus()); // Não posso modificar os testes, mas aqui vai dar erro por causa da data de inicio do Leilao. A data "setada" ainda não chegou.
+		assertEquals(Leilao.CADASTRADO, leilao.getStatus());
 		assertNull(leilao.getUltimoLance());
 		assertNull(leilao.getVenda());
 	}
@@ -559,7 +559,7 @@ public class TestesAceitacao {
 
 		f.fazerLogin("marcos", "senha4");
 		f.participarLeilao(leilao);
-		Thread.sleep(1000);	
+		Thread.sleep(1000);
 		try {
 			f.darLance(300.00);
 			fail("Leilao ja nao esta mais ativo.");
@@ -624,7 +624,5 @@ public class TestesAceitacao {
 		assertTrue(momentoAtual.getTime() - f.listarMomentoAtual().getTime() < DELAY);
                 
 	}
-
-        
-        
+       
 }

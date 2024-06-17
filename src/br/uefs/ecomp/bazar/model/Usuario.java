@@ -12,7 +12,7 @@ do código, e estou ciente que estes trechos não serão considerados para fins de 
 
 package br.uefs.ecomp.bazar.model;
 
-import br.uefs.ecomp.bazar.model.exception.ProdutoNaoCadastrouException;
+import br.uefs.ecomp.bazar.model.exception.LanceInvalidoException;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -72,7 +72,6 @@ public class Usuario {
     }
     
     public void iniciarLeilao(Leilao leilao){
-        leilao.iniciarLeiao();
         this.leilao = leilao;
         
     }
@@ -104,20 +103,10 @@ public class Usuario {
     }
     
     public void darLanceMinimo(){
-        double valor = 0;
-        
-        if (this.leilao.getDeuLance()){ // Leilão já iniciado, o comprador paga o incremento minimo!
-            valor = this.leilao.getUltimoLance().getValor() + this.leilao.getIncrementoMinimo();
-            
-        } else{ // Leilão não iniciado, o comprador paga o preço minimo!
-            this.leilao.setDeuLance();
-            valor = this.leilao.getPrecoMinimo() + this.leilao.getIncrementoMinimo();  
-        }
-        Lance l = new Lance(valor, this, this.listarMomentoAtual().getTime());
-        this.leilao.setUltimoLance(l);
+        this.leilao.darLanceMinimo(this);
     }
 
-    public boolean darLance(double valor){
+    public boolean darLance(double valor) throws LanceInvalidoException{
         return this.leilao.darLance(this, valor); 
     }
     
@@ -127,6 +116,9 @@ public class Usuario {
     }
     
     // Getters e Setters
+    public Leilao getLeilao(){
+        return this.leilao;
+    }
     public String getLogin() {
         return login;
     }

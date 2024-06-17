@@ -12,20 +12,24 @@ do código, e estou ciente que estes trechos não serão considerados para fins de 
 
 package br.uefs.ecomp.bazar.model;
 
+import br.uefs.ecomp.bazar.model.exception.LanceInvalidoException;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
 public abstract class Leilao {
     private Produto produto;
-    private double precoMinimo;
-    private double incrementoMinimo;
+    protected double precoMinimo;
+    protected double incrementoMinimo;
     protected Usuario vendedor;
     protected ArrayList<Usuario> participantes = new ArrayList<>();
-    private boolean iniciado = false;
-    private Venda venda;
-    private Lance ultimoLance;
-    private boolean deuLance = false;
+    protected boolean iniciado = false;
+    protected Venda venda;
+    protected ArrayList<Lance> lances = new ArrayList<>();
+    protected Lance ultimoLance;
+    protected boolean deuLance = false;
     protected int status;
     protected Date inicio;
     protected Date termino;
@@ -51,19 +55,23 @@ public abstract class Leilao {
     // Métodos abstratos
     public abstract void iniciar();
     
-    public abstract void encerrar();
+    public abstract void darLanceMinimo(Usuario comprador);
     
-    public abstract boolean darLance(Usuario comprador, double valor);
+    public abstract boolean darLance(Usuario comprador, double valor) throws LanceInvalidoException;
     
     // Metodos gerais!
-    public void iniciarLeiao(){
-        this.iniciado = true;
-        this.status = Leilao.INICIADO;
+    public void encerrar(){
+        if(this.getDeuLance()){
+            Venda v  =  new Venda(this.getUltimoLance().getValor(), this.getVendedor(), this.getUltimoLance().getParticipante(), this.getProduto(), this, Calendar.getInstance().getTime());
+            this.setVenda(v);
+        }
+        this.termino = Calendar.getInstance().getTime();
+        this.status = Leilao.ENCERRADO;
     }
     
     // Métodos relacionados ao participante!
     public void cadastrarParticipante(Usuario comprador){
-        if(this.vendedor != comprador){
+        if(this.vendedor != comprador && !this.participantes.contains(comprador)){
             comprador.participarLeilao(this);
             this.participantes.add(comprador);
         }

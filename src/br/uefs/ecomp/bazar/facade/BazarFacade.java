@@ -2,7 +2,10 @@ package br.uefs.ecomp.bazar.facade;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
+
 import br.uefs.ecomp.bazar.model.ControllerBazar;
+import br.uefs.ecomp.bazar.model.Lance;
 import br.uefs.ecomp.bazar.model.Leilao;
 import br.uefs.ecomp.bazar.model.LeilaoManual;
 import br.uefs.ecomp.bazar.model.LeilaoAutomatico;
@@ -13,9 +16,11 @@ import br.uefs.ecomp.bazar.model.Venda;
 
 import br.uefs.ecomp.bazar.model.exception.LanceInvalidoException;
 import br.uefs.ecomp.bazar.model.exception.LeilaoNaoCadastrouException;
+import br.uefs.ecomp.bazar.model.exception.LeilaoNaoEncerradoException;
 import br.uefs.ecomp.bazar.model.exception.LoginFalhouException;
 import br.uefs.ecomp.bazar.model.exception.ProdutoNaoCadastrouException;
 import br.uefs.ecomp.bazar.model.exception.UsuarioNaoCadastrouException;
+
 
 import java.util.Calendar;
 import java.util.Date;
@@ -56,8 +61,13 @@ public class BazarFacade {
         return this.cb.cadastrarLeilaoAutomatico(produto, precoMinimo, incrementoMinimo, inicio, termino);
     }
     
-    public LeilaoAutomaticoFechado cadastrarLeilaoAutomaticoFechado(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino){
+    public LeilaoAutomaticoFechado cadastrarLeilaoAutomaticoFechado(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino) throws UsuarioNaoCadastrouException, LoginFalhouException, 
+			ProdutoNaoCadastrouException, LeilaoNaoCadastrouException{
         return this.cb.cadastrarLeilaoAutomaticoFechado(produto, precoMinimo, incrementoMinimo, inicio, termino);
+    }
+    
+    public Iterator<Lance> abrirEnvelopesLeilaoAutomaticoFechado() throws LeilaoNaoEncerradoException{
+        return cb.abrirEnvelopesLeilaoAutomaticoFechado();
     }
     
     public Date listarMomentoAtual(){
@@ -76,7 +86,7 @@ public class BazarFacade {
         this.cb.participarLeilao(leilao);
     }
 
-    public void darLanceMinimo() {
+    public void darLanceMinimo() throws LanceInvalidoException {
         this.cb.darLanceMinimo();
     }
 

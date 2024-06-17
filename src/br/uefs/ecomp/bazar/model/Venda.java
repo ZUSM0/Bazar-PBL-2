@@ -12,19 +12,23 @@ do código, e estou ciente que estes trechos não serão considerados para fins de 
 
 package br.uefs.ecomp.bazar.model;
 
+import java.util.Date;
+
 public class Venda {
     private double valor;
     private Usuario vendedor;
     private Usuario comprador;
     private Produto produto;
     private Leilao leilao;
+    private Date momento;
     
-    public Venda(double valor, Usuario vendedor, Usuario comprador, Produto produto, Leilao leilao){
+    public Venda(double valor, Usuario vendedor, Usuario comprador, Produto produto, Leilao leilao, Date momento){
         this.valor = valor;
         this.vendedor = vendedor;
         this.comprador = comprador;
         this.produto = produto;
         this.leilao = leilao;
+        this.momento = momento;
     }
     
     // Getters e Setters!

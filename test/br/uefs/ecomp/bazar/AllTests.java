@@ -7,14 +7,14 @@ import br.uefs.ecomp.bazar.model.ControllerBazarTest;
 import br.uefs.ecomp.bazar.model.LeilaoManualTest;
 import br.uefs.ecomp.bazar.model.ProdutoTest;
 import br.uefs.ecomp.bazar.model.UsuarioTest;
-import br.uefs.ecomp.bazar.util.ListaEncadeadaTest;
+import br.uefs.ecomp.bazar.model.LeilaoAutomaticoTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	ListaEncadeadaTest.class,
 	UsuarioTest.class,
 	ProdutoTest.class,
 	LeilaoManualTest.class,
+        LeilaoAutomaticoTest.class,
 	ControllerBazarTest.class,
 })
 public class AllTests { }

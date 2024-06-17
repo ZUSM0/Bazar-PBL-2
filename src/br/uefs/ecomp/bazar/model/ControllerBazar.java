@@ -26,27 +26,27 @@ import br.uefs.ecomp.bazar.model.exception.LanceInvalidoException;
 
 public class ControllerBazar {
     private Usuario usuarioLogado;
-    private ArrayList<Usuario> usuarios = new ArrayList<>();
     private boolean logado = false;
     private Produto produto;
     public DbLeiloes leiloes = new DbLeiloes();
+    public DbUsuario usuarios = new DbUsuario();
     
     public ControllerBazar(){
         
     }
       
     public Usuario cadastrarUsuario(String login, String nome, String senha, String cpf, String endereco, String telefone) throws UsuarioNaoCadastrouException {
-        if(login.isEmpty() || senha.isEmpty() || nome.isEmpty() || cpf.isEmpty() || endereco.isEmpty() || telefone.isEmpty()){
+        if(login.isEmpty() || senha.isEmpty() || nome.isEmpty() || cpf.isEmpty() || endereco.isEmpty() || telefone.isEmpty() || usuarios.isLogin(login)){
             throw new UsuarioNaoCadastrouException();
         }
         Usuario usuario = new Usuario(login, nome, senha, cpf, endereco, telefone);
-        usuarios.add(usuario);    
+        usuarios.usuarioCadastradoDb(usuario);    
         return usuario;
     }
     
     public Usuario fazerLogin(String login, String senha) throws UsuarioNaoCadastrouException, LoginFalhouException{
         this.deslogar();
-        Iterator iterator = usuarios.iterator();
+        Iterator iterator = usuarios.listarUsuariosCadastradosDb();
         
         while(iterator.hasNext()){
             Usuario usuario = (Usuario) iterator.next();
@@ -93,7 +93,8 @@ public class ControllerBazar {
     
     public LeilaoAutomatico cadastrarLeilaoAutomatico(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino) throws UsuarioNaoCadastrouException, LoginFalhouException, 
 			ProdutoNaoCadastrouException, LeilaoNaoCadastrouException{
-        if(precoMinimo == 0.0 || incrementoMinimo == 0.0){
+        Date atual = Calendar.getInstance().getTime();
+        if(precoMinimo == 0.0 || incrementoMinimo == 0.0 || inicio.getTime() > termino.getTime() || inicio.getTime() < atual.getTime()){
             throw new LeilaoNaoCadastrouException();
         }
         LeilaoAutomatico leilao = this.usuarioLogado.cadastrarLeilaoAutomatico(produto, precoMinimo, incrementoMinimo, inicio, termino);
@@ -101,9 +102,26 @@ public class ControllerBazar {
         return leilao;
     }
     
-    public LeilaoAutomaticoFechado cadastrarLeilaoAutomaticoFechado(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino){
+    public LeilaoAutomaticoFechado cadastrarLeilaoAutomaticoFechado(Produto produto, double precoMinimo, double incrementoMinimo, Date inicio, Date termino) throws UsuarioNaoCadastrouException, LoginFalhouException, 
+			ProdutoNaoCadastrouException, LeilaoNaoCadastrouException{
+        Date atual = Calendar.getInstance().getTime();
+        if(precoMinimo == 0.0 || incrementoMinimo == 0.0 || inicio.getTime() > termino.getTime() || inicio.getTime() < atual.getTime()){
+            throw new LeilaoNaoCadastrouException();
+        }
         LeilaoAutomaticoFechado leilao = this.usuarioLogado.cadastrarLeilaoAutomaticoFechado(produto, precoMinimo, incrementoMinimo, inicio, termino);
+        this.leiloes.leilaoCadastradoDb(leilao);
         return leilao;
+    }
+    
+    public Iterator<Lance> abrirEnvelopesLeilaoAutomaticoFechado() throws LeilaoNaoEncerradoException{
+        if(this.usuarioLogado.getLeilao().status != Leilao.ENCERRADO){
+            throw new LeilaoNaoEncerradoException();
+        }
+        if(this.usuarioLogado.getLeilao() instanceof LeilaoAutomaticoFechado){
+            LeilaoAutomaticoFechado leilaoFechado = (LeilaoAutomaticoFechado) this.usuarioLogado.getLeilao();
+            return leilaoFechado.abrirEnvelopesLeilaoAutomaticoFechado();
+        }
+        return null;
     }
     
     public Iterator<Leilao> listarLeiloesIniciados(){
@@ -111,16 +129,24 @@ public class ControllerBazar {
         return iterator;
     }
     
-    public void participarLeilao(Leilao leilao){
-        this.usuarioLogado.participarLeilao(leilao);
+    public void participarLeilao(Leilao leilao) throws LeilaoNaoCadastrouException{
+        if(leilao.getStatus() == Leilao.ENCERRADO){
+            throw new LeilaoNaoCadastrouException("Usuario não pode mais participar do leilão!");
+        }
+        leilao.cadastrarParticipante(this.usuarioLogado);
     }
     
-    public void darLanceMinimo(){
+    public void darLanceMinimo() throws LanceInvalidoException{
+        if(this.usuarioLogado.getLeilao().status != Leilao.INICIADO){
+            throw new LanceInvalidoException();
+        }
         this.usuarioLogado.darLanceMinimo();
     }
     
-    public boolean darLance(double valor){
-        
+    public boolean darLance(double valor) throws LanceInvalidoException{
+        if(this.usuarioLogado.getLeilao().getStatus() != Leilao.INICIADO ){
+            throw new LanceInvalidoException();
+        }
         return this.usuarioLogado.darLance(valor);
     }
     
