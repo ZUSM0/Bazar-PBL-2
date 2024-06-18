@@ -6,17 +6,34 @@ package br.uefs.ecomp.bazar.view;
 
 import java.awt.CardLayout;
 
-/**
- *
- * @author less
- */
-public class TelaPrincipal extends javax.swing.JFrame {
+import br.uefs.ecomp.bazar.model.ControllerBazar;
+import br.uefs.ecomp.bazar.model.Leilao;
+import br.uefs.ecomp.bazar.model.Produto;
+import br.uefs.ecomp.bazar.model.exception.LeilaoNaoCadastrouException;
 
-    /**
-     * Creates new form TelaLogin
-     */
+import br.uefs.ecomp.bazar.model.exception.LoginFalhouException;
+import br.uefs.ecomp.bazar.model.exception.ProdutoNaoCadastrouException;
+import br.uefs.ecomp.bazar.model.exception.UsuarioNaoCadastrouException;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+public class TelaPrincipal extends javax.swing.JFrame {
+    
+    private ControllerBazar cb = new ControllerBazar();
+    private TelaLogin telaLogin = new TelaLogin();
+    private int optLeilao;
+    private Leilao leilao;
+    private Produto produto;
+    
     public TelaPrincipal() {
         initComponents();
+        
+        this.cb = telaLogin.getCb();
+        
+        btnHorario.setVisible(false);
     }
 
     /**
@@ -39,10 +56,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JMeusLeiloes = new javax.swing.JPanel();
         JVender = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        btnCadastrarProduto = new javax.swing.JButton();
+        cmbLeilao = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblPreco = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        lblIncremento = new javax.swing.JTextField();
+        txtProduto = new javax.swing.JLabel();
+        btnCadastrarLeilao = new javax.swing.JButton();
+        btnHorario = new javax.swing.JButton();
         JComprar = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        txtBusca = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Leilão");
@@ -145,7 +173,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JMeusLeiloes.setLayout(JMeusLeiloesLayout);
         JMeusLeiloesLayout.setHorizontalGroup(
             JMeusLeiloesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 694, Short.MAX_VALUE)
+            .addGap(0, 743, Short.MAX_VALUE)
         );
         JMeusLeiloesLayout.setVerticalGroup(
             JMeusLeiloesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,13 +189,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(30, 30, 30));
         jLabel2.setText("Cadastrar Leilão:");
 
-        jButton1.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
-        jButton1.setText("Cadastrar Produto");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        btnCadastrarProduto.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
+        btnCadastrarProduto.setText("Cadastrar Produto");
+        btnCadastrarProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                btnCadastrarProdutoActionPerformed(evt);
+            }
+        });
+
+        cmbLeilao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Escolha seu leilão", "Manual", "Automatico", "Automatico Fechado" }));
+        cmbLeilao.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbLeilaoItemStateChanged(evt);
+            }
+        });
+        cmbLeilao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbLeilaoActionPerformed(evt);
             }
         });
 
@@ -176,37 +214,117 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Tipo de Leilão:");
 
+        jLabel4.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel4.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Produto:");
+
+        jLabel5.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel5.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Preço:");
+
+        lblPreco.setBackground(new java.awt.Color(255, 255, 255));
+        lblPreco.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        lblPreco.setForeground(new java.awt.Color(30, 30, 30));
+
+        jLabel6.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel6.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("Incremento Minimo:");
+
+        lblIncremento.setBackground(new java.awt.Color(255, 255, 255));
+        lblIncremento.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        lblIncremento.setForeground(new java.awt.Color(30, 30, 30));
+        lblIncremento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lblIncrementoActionPerformed(evt);
+            }
+        });
+
+        txtProduto.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+
+        btnCadastrarLeilao.setFont(new java.awt.Font("Monospaced", 0, 15)); // NOI18N
+        btnCadastrarLeilao.setText("Cadastrar Leilão!");
+        btnCadastrarLeilao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarLeilaoActionPerformed(evt);
+            }
+        });
+
+        btnHorario.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        btnHorario.setText("Definir horário");
+        btnHorario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHorarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JVenderLayout = new javax.swing.GroupLayout(JVender);
         JVender.setLayout(JVenderLayout);
         JVenderLayout.setHorizontalGroup(
             JVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JVenderLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(JVenderLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addGroup(JVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JVenderLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(JVenderLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbLeilao, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(btnHorario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(120, 120, 120))
+                    .addGroup(JVenderLayout.createSequentialGroup()
+                        .addGroup(JVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnCadastrarLeilao, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(JVenderLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblIncremento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(JVenderLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(258, Short.MAX_VALUE))
+                    .addGroup(JVenderLayout.createSequentialGroup()
+                        .addComponent(btnCadastrarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         JVenderLayout.setVerticalGroup(
             JVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JVenderLayout.createSequentialGroup()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addGap(14, 14, 14)
                 .addGroup(JVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 222, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbLeilao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHorario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(JVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel4)
+                    .addGroup(JVenderLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(txtProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCadastrarProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(JVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblIncremento, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addComponent(btnCadastrarLeilao, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
 
         JMain.add(JVender, "vender");
@@ -214,15 +332,40 @@ public class TelaPrincipal extends javax.swing.JFrame {
         JComprar.setBackground(new java.awt.Color(205, 205, 205));
         JComprar.setPreferredSize(new java.awt.Dimension(694, 372));
 
+        jLabel7.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel7.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(30, 30, 30));
+        jLabel7.setText("Pesquise aqui:");
+
+        txtBusca.setBackground(new java.awt.Color(255, 255, 255));
+        txtBusca.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        txtBusca.setForeground(new java.awt.Color(0, 0, 0));
+
+        btnBuscar.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        btnBuscar.setText("Buscar");
+
         javax.swing.GroupLayout JComprarLayout = new javax.swing.GroupLayout(JComprar);
         JComprar.setLayout(JComprarLayout);
         JComprarLayout.setHorizontalGroup(
             JComprarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 694, Short.MAX_VALUE)
+            .addGroup(JComprarLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnBuscar)
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         JComprarLayout.setVerticalGroup(
             JComprarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 376, Short.MAX_VALUE)
+            .addGroup(JComprarLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(JComprarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar))
+                .addContainerGap(322, Short.MAX_VALUE))
         );
 
         JMain.add(JComprar, "comprar");
@@ -246,7 +389,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(NaveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
-                .addComponent(JMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JMain, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -254,7 +397,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,11 +428,98 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
         // TODO add your handling code here:
+        cb.deslogar();
+        this.dispose();
+        telaLogin.setVisible(true);
     }//GEN-LAST:event_btnSairActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cmbLeilaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbLeilaoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        int leilaoSelecionado = cmbLeilao.getSelectedIndex();
+        this.optLeilao = leilaoSelecionado;
+        if(leilaoSelecionado == 2 || leilaoSelecionado == 3){
+            btnHorario.setVisible(true);
+        } else {
+            btnHorario.setVisible(false);
+        }
+    }//GEN-LAST:event_cmbLeilaoActionPerformed
+
+    private void cmbLeilaoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbLeilaoItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbLeilaoItemStateChanged
+
+    private void btnCadastrarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarProdutoActionPerformed
+        // TODO add your handling code here:
+        TelaCadastroProdutoModal telaProduto = new TelaCadastroProdutoModal(this, true);
+        telaProduto.setVisible(true);
+        
+        try{
+            this.produto = cb.cadastrarProduto(telaProduto.tipo, telaProduto.resumo, telaProduto.detalhe);
+            txtProduto.setText(telaProduto.tipo);
+        } catch(ProdutoNaoCadastrouException e){
+            JOptionPane.showMessageDialog(null, "Produto não pode ser cadastrado!");
+        } catch (UsuarioNaoCadastrouException ex) {
+            JOptionPane.showMessageDialog(null, "Erro no usuario!");
+        } catch (LoginFalhouException ex) {
+            JOptionPane.showMessageDialog(null, "Erro no Login!");
+        }
+        
+    }//GEN-LAST:event_btnCadastrarProdutoActionPerformed
+
+    private void btnCadastrarLeilaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarLeilaoActionPerformed
+        // TODO add your handling code here:
+        double preco = Double.parseDouble(lblPreco.getText());
+        double incremento = Double.parseDouble(lblIncremento.getText());
+        
+        if(this.optLeilao == 1){
+            try {
+                cb.cadastrarLeilaoManual(this.produto, preco, incremento);
+            } catch (UsuarioNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao cadastrar!");
+            } catch (LoginFalhouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro no Login!");
+            } catch (ProdutoNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro no produto!");
+            } catch (LeilaoNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Leilão não pode ser cadastrado... Tente novamente!");
+            }
+        } else if(this.optLeilao == 2){
+            try {
+                cb.cadastrarLeilaoAutomatico(this.produto, preco, incremento, Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+            } catch (UsuarioNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao cadastrar!");
+            } catch (LoginFalhouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro no Login!");
+            } catch (ProdutoNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro no produto!");
+            } catch (LeilaoNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Leilão não pode ser cadastrado... Tente novamente!");
+            }
+        }else if(this.optLeilao == 3){
+            try {
+                cb.cadastrarLeilaoAutomaticoFechado(produto, preco, incremento, Calendar.getInstance().getTime(), Calendar.getInstance().getTime());
+            } catch (UsuarioNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao cadastrar!");
+            } catch (LoginFalhouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro no Login!");
+            } catch (ProdutoNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Erro no produto!");
+            } catch (LeilaoNaoCadastrouException ex) {
+                JOptionPane.showMessageDialog(null, "Leilão não pode ser cadastrado... Tente novamente!");                
+            } 
+        } else{
+            JOptionPane.showMessageDialog(null, "Escolha um tipo de Leilão...");
+                
+        }
+    }//GEN-LAST:event_btnCadastrarLeilaoActionPerformed
+
+    private void btnHorarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHorarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHorarioActionPerformed
+
+    private void lblIncrementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblIncrementoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblIncrementoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,15 +565,26 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel JMeusLeiloes;
     private javax.swing.JPanel JVender;
     private javax.swing.JPanel NaveBar;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCadastrarLeilao;
+    private javax.swing.JButton btnCadastrarProduto;
     private javax.swing.JButton btnComprar;
+    private javax.swing.JButton btnHorario;
     private javax.swing.JButton btnLeiloes;
     private javax.swing.JButton btnSair;
     private javax.swing.JButton btnVender;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cmbLeilao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField lblIncremento;
+    private javax.swing.JTextField lblPreco;
+    private javax.swing.JTextField txtBusca;
+    private javax.swing.JLabel txtProduto;
     // End of variables declaration//GEN-END:variables
 }

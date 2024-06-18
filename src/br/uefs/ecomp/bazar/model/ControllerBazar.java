@@ -171,7 +171,7 @@ public class ControllerBazar {
         this.logado = true;
     }
     
-    private void deslogar(){
+    public void deslogar(){
         this.logado = false;
     }
     

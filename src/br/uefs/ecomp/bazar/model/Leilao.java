@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 public abstract class Leilao {
-    private Produto produto;
+    protected Produto produto;
     protected double precoMinimo;
     protected double incrementoMinimo;
     protected Usuario vendedor;

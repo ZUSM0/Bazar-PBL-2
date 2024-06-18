@@ -4,7 +4,7 @@ import br.uefs.ecomp.bazar.model.Usuario;
 
 public class TelaCadastroModal extends javax.swing.JDialog {
     
-    String login, nome, senha, cpf, endereco, telefone;
+    protected String login, nome, senha, cpf, endereco, telefone;
     public TelaCadastroModal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();

@@ -52,7 +52,7 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtLogin1" min="-2" pref="302" max="-2" attributes="0"/>
+                  <Component id="txtTipo" min="-2" pref="302" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
@@ -63,8 +63,8 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtLogin2" min="-2" pref="419" max="-2" attributes="0"/>
-                              <Component id="txtLogin" min="-2" pref="419" max="-2" attributes="0"/>
+                              <Component id="txtDetalhe" min="-2" pref="419" max="-2" attributes="0"/>
+                              <Component id="txtResumo" min="-2" pref="419" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -84,16 +84,16 @@
                   <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtLogin1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTipo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" pref="27" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtLogin" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtResumo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" pref="27" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtLogin2" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtDetalhe" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Component id="btnCadastrar" min="-2" pref="75" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="83" max="32767" attributes="0"/>
@@ -127,7 +127,7 @@
             <Property name="text" type="java.lang.String" value="Tipo:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtLogin">
+        <Component class="javax.swing.JTextField" name="txtResumo">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -148,14 +148,14 @@
             <Property name="text" type="java.lang.String" value="Descri&#xe7;&#xe3;o Resumida:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtLogin1">
+        <Component class="javax.swing.JTextField" name="txtTipo">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtLogin1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtTipoActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
@@ -172,7 +172,7 @@
             <Property name="text" type="java.lang.String" value="Descri&#xe7;&#xe3;o Detalhada:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtLogin2">
+        <Component class="javax.swing.JTextField" name="txtDetalhe">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>

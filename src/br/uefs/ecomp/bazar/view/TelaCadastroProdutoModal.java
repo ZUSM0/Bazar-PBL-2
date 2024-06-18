@@ -4,15 +4,10 @@
  */
 package br.uefs.ecomp.bazar.view;
 
-/**
- *
- * @author less
- */
+
 public class TelaCadastroProdutoModal extends javax.swing.JDialog {
 
-    /**
-     * Creates new form TelaCadastroProdutoModal
-     */
+    protected String tipo, resumo, detalhe;
     public TelaCadastroProdutoModal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -30,11 +25,11 @@ public class TelaCadastroProdutoModal extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtLogin = new javax.swing.JTextField();
+        txtResumo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtLogin1 = new javax.swing.JTextField();
+        txtTipo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtLogin2 = new javax.swing.JTextField();
+        txtDetalhe = new javax.swing.JTextField();
         btnCadastrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -50,17 +45,17 @@ public class TelaCadastroProdutoModal extends javax.swing.JDialog {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Tipo:");
 
-        txtLogin.setBackground(new java.awt.Color(255, 255, 255));
+        txtResumo.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setBackground(new java.awt.Color(204, 204, 204));
         jLabel3.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Descrição Resumida:");
 
-        txtLogin1.setBackground(new java.awt.Color(255, 255, 255));
-        txtLogin1.addActionListener(new java.awt.event.ActionListener() {
+        txtTipo.setBackground(new java.awt.Color(255, 255, 255));
+        txtTipo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtLogin1ActionPerformed(evt);
+                txtTipoActionPerformed(evt);
             }
         });
 
@@ -69,7 +64,7 @@ public class TelaCadastroProdutoModal extends javax.swing.JDialog {
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Descrição Detalhada:");
 
-        txtLogin2.setBackground(new java.awt.Color(255, 255, 255));
+        txtDetalhe.setBackground(new java.awt.Color(255, 255, 255));
 
         btnCadastrar.setFont(new java.awt.Font("Monospaced", 0, 16)); // NOI18N
         btnCadastrar.setText("Cadastrar");
@@ -91,7 +86,7 @@ public class TelaCadastroProdutoModal extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLogin1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(121, 121, 121))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -101,8 +96,8 @@ public class TelaCadastroProdutoModal extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtLogin2, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtResumo, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(120, 120, 120)
@@ -116,15 +111,15 @@ public class TelaCadastroProdutoModal extends javax.swing.JDialog {
                 .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtLogin1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtResumo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLogin2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtDetalhe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(btnCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 83, Short.MAX_VALUE))
@@ -144,13 +139,17 @@ public class TelaCadastroProdutoModal extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtLogin1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLogin1ActionPerformed
+    private void txtTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtLogin1ActionPerformed
+    }//GEN-LAST:event_txtTipoActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-
-
+        
+        this.tipo = txtTipo.getText();
+        this.resumo = txtResumo.getText();
+        this.detalhe = txtDetalhe.getText();
+        
+        this.dispose();
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**
@@ -202,8 +201,8 @@ public class TelaCadastroProdutoModal extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtLogin;
-    private javax.swing.JTextField txtLogin1;
-    private javax.swing.JTextField txtLogin2;
+    private javax.swing.JTextField txtDetalhe;
+    private javax.swing.JTextField txtResumo;
+    private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 }

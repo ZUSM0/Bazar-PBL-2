@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-// FAZER TESTE PARA TESTAR ESSE CÓDIGO!!!!!
-
 public class LeilaoAutomatico extends Leilao{
 
     public LeilaoAutomatico(Produto produto, double precoMinimo, double incrementoMinimo, Usuario vendedor, Date inicio, Date termino) {

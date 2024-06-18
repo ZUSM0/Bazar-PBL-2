@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 class DbLeiloes {
-    // Fazer ele generico e pode receber qualquer tipo de leilão
     private ArrayList<Leilao> dbLeiloesCadastrados = new ArrayList<>();
     private ArrayList<Leilao> dbLeiloesIniciados = new ArrayList<>();
 

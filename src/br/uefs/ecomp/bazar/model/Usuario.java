@@ -77,7 +77,6 @@ public class Usuario {
     }
     
     public Iterator<Usuario> listarParticipantesLeilao(){
-        // como saber que é o leilao certo?
         if(this.leilao.vendedor == this){ // Só verificar se o usuário que quer ver a lista é o vendedor.
             return this.leilao.listarParcipantes();
         }
@@ -97,7 +96,6 @@ public class Usuario {
     
     // METODOS DE COMPRADOR!
     public void participarLeilao(Leilao leilao){
-        // Se der tempo fazer verificação, cada usuario só pode participar de um leilao por vez
         this.leilao = leilao;   
 
     }
